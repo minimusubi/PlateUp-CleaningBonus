@@ -203,7 +203,7 @@ namespace CleaningBonus {
 		}
 
 		private void Log(string message) {
-			Debug.Log($"[{Main.MOD_NAME}] [{GetType().Name} ] {message}");
+			Debug.Log($"[{Main.MOD_NAME}] [{GetType().Name}] {message}");
 		}
 	}
 }

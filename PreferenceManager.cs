@@ -10,7 +10,7 @@ namespace CleaningBonus {
 	internal class PreferenceManager {
 		internal static PreferenceWrapper Wrapper = null;
 
-		internal static Dictionary<string, PreferenceDefinition> DefaultPreferences = new () {
+		internal static Dictionary<string, PreferenceDefinition> DefaultPreferences = new() {
 			{ "dish_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 8 } },
 			{ "floor_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 8 } },
 			{ "trash_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 4 } },
