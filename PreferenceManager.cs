@@ -19,7 +19,7 @@ namespace CleaningBonus {
 
 		internal static void Initialize() {
 			if (KitchenMods.ModPreload.Mods.Exists(mod => {
-				return mod.Name == "PreferenceSystem";
+				return mod.Name == "2949018507" || mod.Name == "PreferenceSystem";
 			})) {
 				Wrapper = new PreferenceWrapper();
 				Wrapper.SetupMenu();
