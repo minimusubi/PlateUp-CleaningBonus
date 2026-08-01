@@ -14,7 +14,7 @@ namespace CleaningBonus {
 			{ "dish_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 8 } },
 			{ "floor_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 8 } },
 			{ "trash_bonus_percent", new PreferenceDefinition() { Type = typeof(int), Value = 4 } },
-			{ "bonus_cleaning_duration", new PreferenceDefinition() { Type = typeof(int), Value = 5 } },
+			{ "bonus_cleaning_duration", new PreferenceDefinition() { Type = typeof(int), Value = 7 } },
 		};
 
 		internal static void Initialize() {
