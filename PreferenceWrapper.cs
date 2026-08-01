@@ -22,6 +22,14 @@ namespace CleaningBonus {
 
 						return value + "%";
 					});
+					int[] durationOptions = [.. GetInts(0, 15, 1), .. GetInts(20, 60, 5)];
+					string[] durationLabels = GetLabels(durationOptions, (value) => {
+						if (value == 0) {
+							return "Disabled";
+						}
+
+						return value + " second" + (value == 1 ? "" : "s");
+					});
 
 					PreferenceSystemManager manager = (PreferenceSystemManager) PrefManager;
 					manager
@@ -34,16 +42,10 @@ namespace CleaningBonus {
 						.AddLabel("Trash Cleaning Bonus")
 						.AddOption("trash_bonus_percent", (int) PreferenceManager.DefaultPreferences["trash_bonus_percent"].Value, percentOptions, percentLabels)
 						.AddLabel("Bonus Cleaning Time")
-						.AddOption("bonus_cleaning_duration", (int) PreferenceManager.DefaultPreferences["bonus_cleaning_duration"].Value, GetInts(0, 15, 1), GetLabels(percentOptions, (value) => {
-							if (value == 0) {
-								return "Disabled";
-							}
-
-							return value + " second" + (value == 1 ? "" : "s");
-						}))
+						.AddOption("bonus_cleaning_duration", (int) PreferenceManager.DefaultPreferences["bonus_cleaning_duration"].Value, durationOptions, durationLabels)
+						.AddInfo("Caution using high values: the day will not end until either this timer elapses, or everything is cleaned. If you can't find the last mess, this is how long you'll have to wait!")
 						.AddSpacer()
-						.AddButtonWithConfirm("Reset to Defaults", "Reset all Cleaning Bonus settings to the recommended defaults?", (GenericChoiceDecision decision) => 
-						{
+						.AddButtonWithConfirm("Reset to Defaults", "Reset all Cleaning Bonus settings to the recommended defaults?", (GenericChoiceDecision decision) => {
 							if (decision == GenericChoiceDecision.Accept) {
 								ResetPreferences();
 							}
