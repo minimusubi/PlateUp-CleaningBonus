@@ -23,8 +23,8 @@
 				<_SteamLibraryPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</_SteamLibraryPath>
 				<GamePath Condition="!Exists('$(GamePath)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)/steamapps/common/PlateUp/PlateUp</GamePath>
 
-				<GamePath Condition="!Exists('$(GamePath)')">D:\SteamLibrary\steamapps\common\PlateUp\PlateUp</GamePath>
-				<GamePath Condition="!Exists('$(GamePath)')">D:\SteamLibrary\steamapps\common\PlateUp\PlateUp</GamePath>
+				<GamePath Condition="!Exists('$(GamePath)')">E:\SteamLibrary\steamapps\common\PlateUp\PlateUp</GamePath>
+				<GamePath Condition="!Exists('$(GamePath)')">E:\SteamLibrary\steamapps\common\PlateUp\PlateUp</GamePath>
 			</PropertyGroup>
 		</When>
 	</Choose>
@@ -34,6 +34,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 
 		<WorkshopPath Condition="'$(WorkshopPath)' == ''">$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName($(GamePath)))))))\workshop\content\1599600</WorkshopPath>
+		<WorkshopItemID Condition="'$(WorkshopItemID)' == ''">3036483525</WorkshopItemID>
 		<AssemblyReferencePath Condition="'$(AssemblyReferencePath)' == ''">$([System.IO.Path]::Combine($(GamePath), 'PlateUp_Data', 'Managed'))</AssemblyReferencePath>
 		<GameModsPath Condition="'$(GameModsPath)' == ''">$([System.IO.Path]::Combine($(GamePath), 'Mods'))</GameModsPath>
 		<AssetBundlePath Condition="'$(AssetBundlePath)' == ''">$([System.IO.Path]::Combine($(USERPROFILE), 'My Project', 'Assets', 'AssetBundles', $([System.String]::Copy('$(MSBuildProjectName)').ToLower())))</AssetBundlePath>
@@ -65,14 +66,14 @@
 
 	<ItemGroup Condition="'$(GamePath)' != '' AND '$(EnableCopyLocal)' AND '$(EnableAutoReference)'">
 		<Reference Include="$(AssemblyReferencePath)\*.dll" Private="true" />
-		<Reference Include="$(WorkshopPath)\**\*.dll" Private="true" />
-		<Reference Include="$(GameModsPath)\**\content\*.dll" Exclude="$(GameModsPath)\$(MSBuildProjectName)\**\content\*.dll" Private="true" />
+		<Reference Include="$(WorkshopPath)\**\*.dll" Exclude="$(WorkshopPath)\$(WorkshopItemID)\$(AssemblyName).dll" Private="true" />
+		<Reference Include="$(GameModsPath)\**\content\*.dll" Exclude="$(GameModsPath)\$(MSBuildProjectName)\content\*.dll" Private="true" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(GamePath)' != '' AND '!$(EnableCopyLocal)' AND '$(EnableAutoReference)'">
 		<Reference Include="$(AssemblyReferencePath)\*.dll" Exclude="@(Blacklist)" Private="false" />
-		<Reference Include="$(WorkshopPath)\**\*.dll" Private="false" />
-		<Reference Include="$(GameModsPath)\**\content\*.dll" Exclude="$(GameModsPath)\$(MSBuildProjectName)\**\content\*.dll" Private="false" />
+		<Reference Include="$(WorkshopPath)\**\*.dll" Exclude="$(WorkshopPath)\$(WorkshopItemID)\$(AssemblyName).dll" Private="false" />
+		<Reference Include="$(GameModsPath)\**\content\*.dll" Exclude="$(GameModsPath)\$(MSBuildProjectName)\content\*.dll" Private="false" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(EnableDocumentation)'">
@@ -96,10 +97,10 @@
 	</Target>
 		
 	<ItemGroup>
-	  <EditorConfigFiles Remove="$(ProjectDir)\.editorconfig" />
+		<EditorConfigFiles Remove="$(ProjectDir)\.editorconfig" />
 	</ItemGroup>
 		
 	<ItemGroup>
-	  <None Include="$(ProjectDir)\.editorconfig" />
+		<None Include="$(ProjectDir)\.editorconfig" />
 	</ItemGroup>
 </Project>
