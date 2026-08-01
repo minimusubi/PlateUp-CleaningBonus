@@ -152,9 +152,13 @@ namespace CleaningBonus {
 		private int GetOccupiedTrashBinCount() {
 			int count = 0;
 
-			using var bins = TrashBinQuery.ToComponentDataArray<CApplianceBin>(Allocator.TempJob);
-			foreach (var bin in bins) {
-				if (bin.EmptyBinItem == ItemID.BinBag) {
+			using var binEntities = TrashBinQuery.ToEntityArray(Allocator.TempJob);
+			foreach (var entity in binEntities) {
+				var appliance = EntityManager.GetComponentData<CAppliance>(entity);
+				var bin = EntityManager.GetComponentData<CApplianceBin>(entity);
+
+				// Count all trash bins with stuff in it, except the one outside
+				if (appliance.ID != ApplianceID.WheelieBin) {
 					if (bin.CurrentAmount > 0) {
 						count++;
 					}
