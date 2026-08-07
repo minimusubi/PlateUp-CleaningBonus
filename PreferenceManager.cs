@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using KitchenMods;
+using UnityEngine;
 
 namespace CleaningBonus {
 	internal struct PreferenceDefinition {
@@ -8,6 +10,7 @@ namespace CleaningBonus {
 	}
 
 	internal class PreferenceManager {
+		private const string PreferenceSystemManagerTypeName = "PreferenceSystem.PreferenceSystemManager";
 		internal static PreferenceWrapper Wrapper = null;
 
 		internal static Dictionary<string, PreferenceDefinition> DefaultPreferences = new() {
@@ -18,12 +21,22 @@ namespace CleaningBonus {
 		};
 
 		internal static void Initialize() {
-			if (KitchenMods.ModPreload.Mods.Exists(mod => {
-				return mod.Name == "2949018507" || mod.Name == "PreferenceSystem";
-			})) {
-				Wrapper = new PreferenceWrapper();
-				Wrapper.SetupMenu();
+			if (!IsPreferenceSystemAvailable()) {
+				Log("PreferenceSystem was not found, using only default preferences.");
+				return;
 			}
+
+			Log("PreferenceSystem was found, setting up preference menu.");
+			Wrapper = new PreferenceWrapper();
+			Wrapper.SetupMenu();
+		}
+
+		private static bool IsPreferenceSystemAvailable() {
+			return ModPreload.Mods.Exists(mod => {
+				return mod.GetPacks<AssemblyModPack>().Exists(pack => {
+					return pack.Asm?.GetType(PreferenceSystemManagerTypeName, throwOnError: false) != null;
+				});
+			});
 		}
 
 		public static T Get<T>(string key) {
@@ -44,6 +57,10 @@ namespace CleaningBonus {
 			}
 
 			return false;
+		}
+
+		private static void Log(string message) {
+			Debug.Log($"[{Main.MOD_NAME}] [PreferenceManager] {message}");
 		}
 	}
 }
